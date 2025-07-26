@@ -67,12 +67,13 @@ public class GoogleOAuthService {
         }
         
         existingUser.setEmailVerified(true);
+        existingUser.setRole(User.Role.ADMIN);
         
         existingUser.setGoogleId(googleId);
         existingUser.setProvider("google");
         
         User savedUser = userRepository.save(existingUser);
-        log.info("Successfully linked Google account to user: {}", savedUser.getEmail());
+        log.info("Successfully linked Google account to user: {} and upgraded to admin role", savedUser.getEmail());
         
         return savedUser;
     }
@@ -83,7 +84,7 @@ public class GoogleOAuthService {
                 .email(email)
                 .name(name)
                 .password(passwordEncoder.encode("GOOGLE_OAUTH_" + googleId)) 
-                .role(User.Role.USER)
+                .role(User.Role.ADMIN)
                 .emailVerified(true) 
                 .googleId(googleId)
                 .provider("google")

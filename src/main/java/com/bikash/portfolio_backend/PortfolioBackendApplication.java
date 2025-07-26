@@ -1,7 +1,9 @@
 package com.bikash.portfolio_backend;
 
+import com.bikash.portfolio_backend.config.AdminEmailConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -11,6 +13,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableMongoAuditing
 @EnableScheduling
+@EnableConfigurationProperties(AdminEmailConfig.class)
 public class PortfolioBackendApplication {
 
 	@PostConstruct

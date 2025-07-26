@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -88,6 +89,14 @@ public class AuthenticationService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return UserDto.fromUser(user);
+    }
+
+    public UserDto getAdminProfile() {
+        List<User> adminUsers = userRepository.findByRole(User.Role.ADMIN);
+        if (adminUsers.isEmpty()) {
+            throw new ResourceNotFoundException("No admin user found");
+        }
+        return UserDto.fromUser(adminUsers.get(0));
     }
 
 
