@@ -1,7 +1,6 @@
 package com.bikash.portfolio_backend.controller;
 
-import com.bikash.portfolio_backend.dto.auth.AuthResponse;
-import com.bikash.portfolio_backend.service.GoogleOAuthService;
+import com.bikash.portfolio_backend.config.AdminEmailConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import java.util.Map;
 @Slf4j
 public class GoogleOAuthController {
 
-    private final GoogleOAuthService googleOAuthService;
+    private final AdminEmailConfig adminEmailConfig;
 
     /**
      * Initiate Google OAuth login
@@ -55,5 +54,13 @@ public class GoogleOAuthController {
         );
 
         return ResponseEntity.ok(userInfo);
+    }
+
+    @GetMapping("/google/allowed-emails")
+    public ResponseEntity<Map<String, Object>> getAllowedEmails() {
+        return ResponseEntity.ok(Map.of(
+            "allowedEmails", adminEmailConfig.getAllowedEmails(),
+            "totalCount", adminEmailConfig.getAllowedEmails() != null ? adminEmailConfig.getAllowedEmails().size() : 0
+        ));
     }
 } 

@@ -56,12 +56,6 @@ public class SecurityConfig {
                     "/auth/google/user",
                     "/oauth2/authorization/**",
                     "/login/oauth2/code/**",
-                    "/contact",
-                    "/projects",
-                    "/projects/**",
-                    "/skills",
-                    "/skills/**",
-                    "/status/current",
                     "/test/**",
                     "/swagger-ui/**",
                     "/api-docs/**",
@@ -73,9 +67,37 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/swagger-ui/**"
                 ).permitAll()
-                .requestMatchers(
-                    "/auth/change-password"
-                ).hasRole("ADMIN")
+                
+                .requestMatchers("GET", "/projects", "/projects/**").permitAll()
+                .requestMatchers("GET", "/skills", "/skills/**").permitAll()
+                .requestMatchers("GET", "/status/current").permitAll()
+                
+
+                .requestMatchers("POST", "/contact").permitAll()
+                
+
+                .requestMatchers("GET", "/auth/profile").permitAll()
+                
+                .requestMatchers("/auth/google/allowed-emails").hasRole("ADMIN")
+                
+                .requestMatchers("/auth/change-password").authenticated()
+                
+                .requestMatchers("POST", "/projects", "/projects/**").hasRole("ADMIN")
+                .requestMatchers("PUT", "/projects", "/projects/**").hasRole("ADMIN")
+                .requestMatchers("DELETE", "/projects", "/projects/**").hasRole("ADMIN")
+                
+                .requestMatchers("POST", "/skills", "/skills/**").hasRole("ADMIN")
+                .requestMatchers("PUT", "/skills", "/skills/**").hasRole("ADMIN")
+                .requestMatchers("DELETE", "/skills", "/skills/**").hasRole("ADMIN")
+                
+                .requestMatchers("POST", "/status", "/status/**").hasRole("ADMIN")
+                .requestMatchers("PUT", "/status", "/status/**").hasRole("ADMIN")
+                .requestMatchers("DELETE", "/status", "/status/**").hasRole("ADMIN")
+                
+                .requestMatchers("GET", "/contact/**").hasRole("ADMIN")
+                .requestMatchers("PUT", "/contact/**").hasRole("ADMIN")
+                .requestMatchers("DELETE", "/contact/**").hasRole("ADMIN")
+                
                 .anyRequest().authenticated()
             )
             .exceptionHandling(exception -> exception

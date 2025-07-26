@@ -6,6 +6,7 @@ A comprehensive Spring Boot backend service for a personal portfolio website wit
 
 ### 🔐 Authentication & Authorization
 - **Google OAuth2 Integration** - Seamless login with Google accounts
+- **Admin Email Restriction** - Only pre-approved admin emails can login via Google OAuth
 - **JWT Authentication** - Secure token-based authentication
 - **Role-based Access Control** - USER and ADMIN roles with granular permissions
 - **Email Verification** - Automated email verification system

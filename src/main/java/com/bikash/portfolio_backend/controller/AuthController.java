@@ -55,9 +55,14 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    @Operation(summary = "Get user profile", description = "Retrieves the current user's profile information")
+    @Operation(summary = "Get user profile", description = "Retrieves the current user's profile information or admin profile for public access")
     public ResponseEntity<UserDto> getProfile(Authentication authentication) {
-        UserDto user = authenticationService.getProfile(authentication.getName());
+        UserDto user;
+        if (authentication != null && authentication.isAuthenticated()) {
+            user = authenticationService.getProfile(authentication.getName());
+        } else {
+            user = authenticationService.getAdminProfile();
+        }
         return ResponseEntity.ok(user);
     }
 

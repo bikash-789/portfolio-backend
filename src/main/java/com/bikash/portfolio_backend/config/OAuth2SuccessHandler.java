@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final GoogleOAuthService googleOAuthService;
+    private final AdminEmailConfig adminEmailConfig;
     
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
@@ -46,6 +47,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             if (email == null || name == null) {
                 log.error("Missing required attributes from Google OAuth");
                 redirectToErrorPage(response, "Missing required user information");
+                return;
+            }
+            
+            if (!adminEmailConfig.isEmailAllowed(email)) {
+                log.warn("OAuth login attempt denied for email: {} - not in allowed admin emails list", email);
+                redirectToErrorPage(response, "Access denied. Your email is not authorized for admin access.");
                 return;
             }
             
