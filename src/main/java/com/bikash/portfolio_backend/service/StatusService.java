@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -148,5 +150,14 @@ public class StatusService {
             statusRepository.saveAll(expiredStatuses);
             log.info("Deactivated {} expired statuses", expiredStatuses.size());
         }
+    }
+
+    @Scheduled(cron = "0 0 17 L * ?", zone="Asia/Kolkata")
+    @Transactional
+    public void cleanStatusHistory() {
+        statusRepository.deleteAll();
+        LocalDateTime now = LocalDateTime.now();
+        String monthName = now.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        log.info("Deleted status history for {} month", monthName);
     }
 } 
